@@ -1,5 +1,3 @@
-
-
 gene = open('./data/genelen/refGene.txt','r')
 genelist = []
 
@@ -8,7 +6,7 @@ for line in gene:
 	genelist.append(items)
 
 genelens = {}
-
+#make dictionary{key=gene type:value=[length1,length2,length3,...]}
 for lists in genelist:
 	exonstart = lists[9].split(',')
 	exonstart.pop(-1)
@@ -24,6 +22,6 @@ for lists in genelist:
 length = open('./results/length.txt','w')
 
 for k,v in genelens.items():
-	geneave = sum(map(int,v)) / float(len(v))
+	geneave = sum(map(int,v)) / float(len(v)) #some genes have some length data,so take the average
 	length.write(k + '\t' + str(geneave) + '\n')
 

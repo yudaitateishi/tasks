@@ -1,0 +1,11 @@
+driver.sh : move this,run all scripts.
+
+input_maf_data.py : pickup patient No,mutant gene,mutation type from /tasks/search_mutation/data/mutation/*.maf.txt
+
+mutsort.py : count how many mutation in a gene and sort
+
+genelen.py : calcurate gene length from /tasks/search_mutation/data/genelen/refGene.txt
+
+correct.py : calcurate number of mutation / gene length
+
+all results in /tasks/search_mutation/results
