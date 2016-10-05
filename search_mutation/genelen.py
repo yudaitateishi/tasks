@@ -1,4 +1,4 @@
-import numpy as np
+
 
 gene = open('./data/genelen/refGene.txt','r')
 genelist = []
