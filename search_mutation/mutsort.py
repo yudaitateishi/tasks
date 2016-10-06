@@ -13,7 +13,7 @@ symcount = {}
 
 for lists in textlist:
 	if lists[1] == 'Unknown' or lists[2] == 'Silent' or lists[2] == 'Intron' or lists[2] == '3\'UTR' or lists[2] == '5\'UTR':  #exclude Unknown gene and Silent mutations
-		print('Silent or Unknown')
+		pass
 	else:
 		if lists[1] in symcount:
 			symcount[lists[1]] += 1
