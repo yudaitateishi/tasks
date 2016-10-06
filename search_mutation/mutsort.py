@@ -12,7 +12,7 @@ sort = open('./results/sort.txt','w')
 symcount = {}
 
 for lists in textlist:
-	if lists[1] == 'Unknown' or lists[2] == 'Silent' or lists[2] == 'Intron' or lists[2] == '3\'UTR' or lists[2] == '5\'UTR':  #exclude Unknown gene and Silent mutations
+	if lists[1] == 'Unknown' or lists[2] == 'Silent' or lists[2] == 'Intron':  #exclude Unknown gene and Silent mutations
 		pass
 	else:
 		if lists[1] in symcount:
