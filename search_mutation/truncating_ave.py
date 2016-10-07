@@ -12,13 +12,14 @@ for line in sort:
 	sortdict[items[0]] = int(items[1])
 sort.close()
 
+truncatinglist = ['Frame_Shift_Ins','Frame_Shift_Del','Nonsense_Mutation']
 truncating = {}
 for lists in mutlist:
 	if lists[1] in truncating:
-		if lists[2] == 'Frame_Shift_Ins' or lists[2] == 'Frame_Shift_Del' or lists[2] == 'Nonsense_Mutation':
+		if lists[2] in truncatinglist:
 			truncating[lists[1]] += 1.0
 	else:
-		if lists[2] == 'Frame_Shift_Ins' or lists[2] == 'Frame_Shift_Del' or lists[2] == 'Nonsense_Mutation':
+		if lists[2] in truncatinglist:
 			truncating[lists[1]] = 1.0
 
 truncating_ave = {}
