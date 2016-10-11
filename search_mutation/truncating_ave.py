@@ -12,7 +12,7 @@ for line in sort:
 	sortdict[items[0]] = int(items[1])
 sort.close()
 
-truncatinglist = ['Frame_Shift_Ins','Frame_Shift_Del','Nonsense_Mutation']
+truncatinglist = ['Frame_Shift_Ins','Frame_Shift_Del','Nonsense_Mutation','Splice_Site']
 truncating = {}
 for lists in mutlist:
 	if lists[1] in truncating:
@@ -31,7 +31,7 @@ for k,v in sortdict.items():
 
 trunc = open('./results/truncating_ave.txt','w')
 for k,v in sorted(truncating_ave.items(),key=lambda x:x[1],reverse=True):
-	trunc.write(k + '\t' + str(v) + '\n')
+	trunc.write(k + '\t'+ str(sortdict[k]) + '\t' + str(v) + '\n')
 trunc.flush()
 trunc.close()
 

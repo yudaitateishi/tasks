@@ -36,7 +36,7 @@ mutation.close()
 sort = open('./results/sort.txt','w')
 symcount = {}
 
-silent = ['Silent','Intron','3\'UTR','5\'UTR','5\'Flank']
+silent = ['Silent','Intron','3\'UTR','5\'UTR','5\'Flank','De_novo_Start_*','IGR','RNA']
 for lists in mutlist:
 	if lists[1] == 'Unknown' or lists[2] in silent:
 		pass
