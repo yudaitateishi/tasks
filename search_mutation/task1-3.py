@@ -46,6 +46,7 @@ for lists in mutlist:
 		else:
 			symcount[lists[1]] = 1
 sortwrite(symcount,sort)
+sort.flush()
 sort.close()
 
 
@@ -71,34 +72,37 @@ length = open('./results/length.txt','w')
 for k,v in genelength.items():
 	geneave = sum(map(int,v)) / float(len(v))
 	length.write(k + '\t' + str(geneave) + '\n')
+length.flush()
 length.close()
 
 
-sort = open('./results/sort.txt','r')
+sort2 = open('./results/sort.txt','r')
 sortdict = {}
-for line in sort:
+for line in sort2:
 	items = line[:-1].split('\t')
 	sortdict[items[0]] = items[1]
-sort.close()
+sort2.close()
 
 genelen = open('./results/length.txt','r')
 lengdict = {}
 for line in genelen:
 	items = line[:-1].split('\t')
 	lengdict[items[0]] = items[1]
-length.close()
+genelen.close()
 
 correctdict = {}
 mcorrect = open('./results/correct.txt','w')
 fail = open('./results/fail.txt','w')
 for k,v in sortdict.items():
 	if k in lengdict:
-		correct = str((float(v) / float(lengdict[k])) / 1000000)
+		correct = str((float(v) / float(lengdict[k])) * 1000000.0)
 		correctdict[k] = correct
 	else:
 		fail.write(k + '\t')
-sortwrite(sortdict,mcorrect)
+sortwrite(correctdict,mcorrect)
+mcorrect.flush()
 mcorrect.close()
+fail.flush()
 fail.close()
 
 
