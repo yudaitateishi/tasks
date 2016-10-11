@@ -4,7 +4,7 @@ def tcvconvert(arg1,arg2):
 		arg2.append(items)
 
 def sortwrite(arg3,arg4):
-	for k,v in sorted(arg3.items(),key=lambda x:x[1],reverse=True):
+	for k,v in sorted(arg3.items(),key=lambda x:float(x[1]),reverse=True):
 		arg4.write(k + '\t' + str(v) + '\n')
 
 
@@ -36,7 +36,7 @@ mutation.close()
 sort = open('./results/sort.txt','w')
 symcount = {}
 
-silent = ['Silent','Intron','3\'UTR','5\'UTR','5\'Flank','De_novo_Start_*','IGR','RNA']
+silent = ['Silent','Intron','3\'UTR','5\'UTR','5\'Flank','De_novo_Start_*','RNA','IGR']
 for lists in mutlist:
 	if lists[1] == 'Unknown' or lists[2] in silent:
 		pass
@@ -59,19 +59,31 @@ genelength = {}
 for lists in genelist:
 	starts = lists[9].split(',')
 	starts.pop(-1)
+	chs = lists[6]
+	exons = []
 	ends = lists[10].split(',')
 	ends.pop(-1)
+	che = lists[7]
+	exone = []
+	for v in starts:
+		num = starts.index(v)
+		if che > ends[num] > starts[num] > chs:
+			exons.append(starts[num])
+			exone.append(ends[num])
+		elif che > ends[num] > chs > starts[num]:
+			exons.append(chs)
+			exone.append(ends[num])
+		elif ends[num] > che > starts[num] > chs:
+			exons.append(starts[num])
+			exone.append(che)
+	leng = sum(map(int,exone)) - sum(map(int,exons))
 	if lists[12] in genelength:
-		genelength[lists[12]].append(sum(map(int,ends)) - sum(map(int,starts)))
+		if leng < genelength[lists[12]]:
+			pass
 	else:
-		newgene = []
-		newgene.append(sum(map(int,ends)) - sum(map(int,starts)))
-		genelength[lists[12]] = newgene
-
+		genelength[lists[12]] = leng
 length = open('./results/length.txt','w')
-for k,v in genelength.items():
-	geneave = sum(map(int,v)) / float(len(v))
-	length.write(k + '\t' + str(geneave) + '\n')
+sortwrite(genelength,length)
 length.flush()
 length.close()
 
@@ -95,8 +107,11 @@ mcorrect = open('./results/correct.txt','w')
 fail = open('./results/fail.txt','w')
 for k,v in sortdict.items():
 	if k in lengdict:
-		correct = str((float(v) / float(lengdict[k])) * 1000000.0)
-		correctdict[k] = correct
+		if float(lengdict[k]) == 0:
+			correctdict[k] = '0'
+		else:
+			correct = str((float(v) / float(lengdict[k])) * 1000000)
+			correctdict[k] = correct
 	else:
 		fail.write(k + '\t')
 sortwrite(correctdict,mcorrect)
