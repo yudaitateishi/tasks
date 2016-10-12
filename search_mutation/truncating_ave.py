@@ -28,9 +28,8 @@ for k,v in sortdict.items():
 		truncating_ave[k] = truncating[k] / v
 	else:
 		truncating_ave[k] = 0
-
 trunc = open('./results/truncating_ave.txt','w')
-for k,v in sorted(truncating_ave.items(),key=lambda x:x[1],reverse=True):
+for k,v in sorted(truncating_ave.items(),key=lambda x:float((x[1]+1)*sortdict[x[0]]),reverse=True):
 	trunc.write(k + '\t'+ str(sortdict[k]) + '\t' + str(v) + '\n')
 trunc.flush()
 trunc.close()
