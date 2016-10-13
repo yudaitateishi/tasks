@@ -59,23 +59,26 @@ genelength = {}
 for lists in genelist:
 	starts = lists[9].split(',')
 	starts.pop(-1)
-	chs = lists[6]
+	cds = lists[6]
 	exons = []
 	ends = lists[10].split(',')
 	ends.pop(-1)
-	che = lists[7]
+	cde = lists[7]
 	exone = []
 	for v in starts:
 		num = starts.index(v)
-		if che > ends[num] > starts[num] > chs:
+		if cde > ends[num] > starts[num] > cds:
 			exons.append(starts[num])
 			exone.append(ends[num])
-		elif che > ends[num] > chs > starts[num]:
-			exons.append(chs)
+		elif cde > ends[num] > cds > starts[num]:
+			exons.append(cds)
 			exone.append(ends[num])
-		elif ends[num] > che > starts[num] > chs:
+		elif ends[num] > cde > starts[num] > cds:
 			exons.append(starts[num])
-			exone.append(che)
+			exone.append(cde)
+		elif ends[num] > cde > cds > starts[num]:
+			exons.append(cds)
+			exons.append(cde)
 	leng = sum(map(int,exone)) - sum(map(int,exons))
 	if lists[12] in genelength:
 		if leng < genelength[lists[12]]:
