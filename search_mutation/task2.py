@@ -7,6 +7,7 @@ if len(sys.argv) < 2:
 	print("Usage: #python task2.py refGene.txt")
 	quit()
 
+#make refGene data list
 gene_list = []
 with open(sys.argv[1],'r') as gene_file:
 	for line in gene_file:
@@ -64,5 +65,5 @@ for line in gene_list:
 with open("./results/gene_length.txt","w") as result:
 	for k,v in sorted(gene_length.items(),key=lambda x:int(x[1]),reverse=True):
 		result.write(k + "\t" + str(v) + "\n")
-	print("result file in ./results/gene_length.txt")
+	print("result file is ./results/gene_length.txt")
 				

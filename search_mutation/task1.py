@@ -6,11 +6,13 @@ import sys
 if len(sys.argv) < 2:
 	print('Usage: #python task1.py .maf.txt')
 	quit()
+
 list_empty = open("./results/mutation_list.txt","w")
 list_empty.close()
 
 #count mutation
 mutation_count = {}
+output_list = []
 silent = ["Silent","Intron","3'UTR","5'UTR","5'Flank","De_novo_Start_Ins","De_novo_Start_Del","RNA","IGR"]
 for maf_file in sys.argv:
 	if maf_file != "task1.py":
@@ -29,10 +31,9 @@ for maf_file in sys.argv:
 				else:
 					continue
 			break
-		#count mutation(without gene = Unknown and mutation type = silent) 
+		#count mutation(without Unknown gene and silent mutation type) 
 		for mutation in mutation_list:
-			with open("./results/mutation_list.txt","a+") as list_output:
-				list_output.write(mutation[0] + "\t" + mutation[8] + "\n")
+			output_list.append(mutation[0] + "\t" + mutation[8])
 			if mutation[0] == "Unknown" or mutation[8] in silent:
 				continue
 			else:
@@ -42,8 +43,11 @@ for maf_file in sys.argv:
 					mutation_count[mutation[0]] = 1	
 
 #sort and write result file
-with open('./results/mutation_count.txt','w') as result:
+with open("./results/mutation_list.txt","w") as result_list:
+	result_list.write("\n".join(output_list))
+	print("result file is ./results/mutation_list.txt")
+with open('./results/mutation_count.txt','w') as result_count:
 	for k,v in sorted(mutation_count.items(),key=lambda x:int(x[1]),reverse=True):
-		result.write(k + '\t' + str(v) + '\n')
-	print("result file in ./results/mutation_count.txt")
+		result_count.write(k + '\t' + str(v) + '\n')
+	print("result file is ./results/mutation_count.txt")
 
