@@ -3,8 +3,8 @@
 import sys
 
 #check args
-if len(sys.argv) < 2:
-	print("Usage: #python task2.py refGene.txt")
+if len(sys.argv) < 3:
+	print("Usage: #python task2.py GenePred_file output_file")
 	quit()
 
 #make refGene data list
@@ -25,17 +25,17 @@ for line in gene_list:
 	read_ends = []
 	for value in starts:
 		position = starts.index(value)
-		if starts[position] < cdstart:
+		if starts[position] < cdstart:#first check where is exon start position
 			if ends[position] < cdstart:
 				pass
-			elif cdstart <= ends[position] < cdend:
+			elif cdstart <= ends[position] < cdend:#check where is exon end position
 				read_starts.append(cdstart)
 				read_ends.append(ends[position])
 			elif cdend <= ends[position]:
 				read_starts.append(cdstart)
 				read_ends.append(cdend)
 			else:
-				print('Error')
+				sys.stderr.write('Error')
 				quit()
 		elif cdstart <= starts[position]:
 			if starts[position] <= ends[position] <= cdend:
@@ -47,13 +47,13 @@ for line in gene_list:
 			elif cdend < starts[position]:
 				pass
 			else:
-				print('Error')
+				sys.stderr.write('Error')
 				quit()
 		else:
-			print('Error')
+			sys.stderr.write('Error')
 			quit()
 
-	length = sum(map(int,read_ends)) - sum(map(int,read_starts))
+	length = sum(map(int,read_ends)) - sum(map(int,read_starts)) + len(read_starts)
 	if line[12] in gene_length:
 		if length > gene_length[line[12]]:
 			gene_length[line[12]] = length
@@ -62,8 +62,8 @@ for line in gene_list:
 	else:
 		gene_length[line[12]] = length	
 
-with open("./results/gene_length.txt","w") as result:
+with open(sys.argv[2],"w") as result:
 	for k,v in sorted(gene_length.items(),key=lambda x:int(x[1]),reverse=True):
 		result.write(k + "\t" + str(v) + "\n")
-	print("result file is ./results/gene_length.txt")
+	print("output gene length")
 				

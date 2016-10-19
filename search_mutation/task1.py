@@ -3,12 +3,9 @@
 import sys
 
 #check args
-if len(sys.argv) < 2:
-	print('Usage: #python task1.py .maf.txt')
+if len(sys.argv) < 4:
+	print('Usage: #python task1.py input_file(.maf.txt) output_list output_count')
 	quit()
-
-list_empty = open("./results/mutation_list.txt","w")
-list_empty.close()
 
 #count mutation
 mutation_count = {}
@@ -20,12 +17,13 @@ for maf_file in sys.argv:
 		with open(maf_file,'r') as maf_data:
 			for line in maf_data:
 				mutation_list.append(line[:-1].rstrip("\n").split("\t"))
-		#check 1st line header or not
+		#check 1st line is header or not
 		while True:
-			for value in mutation_list[0]:
-				if value == mutation_list[1][mutation_list[0].index(value)]:
+			for first_line in mutation_list[0]:
+				position = mutation_list[0].index(first_line)
+				if first_line == mutation_list[1][position] or first_line == mutation_list[2][position]:
 					break
-				elif value == mutation_list[0][-1]:
+				elif first_line == mutation_list[0][-1]:
 					mutation_list.pop(0)
 					break
 				else:
@@ -33,8 +31,8 @@ for maf_file in sys.argv:
 			break
 		#count mutation(without Unknown gene and silent mutation type) 
 		for mutation in mutation_list:
-			output_list.append(mutation[0] + "\t" + mutation[8])
-			if mutation[0] == "Unknown" or mutation[8] in silent:
+			output_list.append(mutation[0] + "\t" + mutation[8])#mutation[0] = gene name
+			if mutation[0] == "Unknown" or mutation[8] in silent:#mutation[8] = mutation type
 				continue
 			else:
 				if mutation[0] in mutation_count:
@@ -43,11 +41,12 @@ for maf_file in sys.argv:
 					mutation_count[mutation[0]] = 1	
 
 #sort and write result file
-with open("./results/mutation_list.txt","w") as result_list:
+with open(sys.argv[2],"w") as result_list:
 	result_list.write("\n".join(output_list))
-	print("result file is ./results/mutation_list.txt")
-with open('./results/mutation_count.txt','w') as result_count:
+	print("output mutation list")
+
+with open(sys.argv[3],'w') as result_count:
 	for k,v in sorted(mutation_count.items(),key=lambda x:int(x[1]),reverse=True):
 		result_count.write(k + '\t' + str(v) + '\n')
-	print("result file is ./results/mutation_count.txt")
+	print("output mutation count")
 
